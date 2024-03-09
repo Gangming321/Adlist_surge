@@ -5,18 +5,25 @@ import datetime
 # 定义你的URL列表
 urls = [
     "https://share.is26.com/subscribe/adblock.hosts",
-    # 添加更多URL
+    "https://big.oisd.nl",
+    "https://anti-ad.net/domains.txt"
 ]
 
 # 获取和处理数据
 def get_and_process_data(urls):
     processed_data = ""
     for url in urls:
+        # 从URL获取内容
         response = requests.get(url)
         domains = response.text.splitlines()
+        
+        # 编辑内容格式，并删除 || 和 ^
         for domain in domains:
-            processed_data += f"DOMAIN,{domain}\n"
+            # 删除 || 和 ^
+            domain_cleaned = domain.replace("||", "").replace("^", "")
+            processed_data += f"DOMAIN,{domain_cleaned}\n"
     return processed_data
+
 
 # 保存数据到文件
 def save_data_to_file(data, file_name):
